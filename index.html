@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ali's Store - Your one-stop shop for electronics, clothes, and shoes">
+  <title>Ali's Store - Shop Now</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loading" class="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Navbar -->
+  <header>
+    <div class="logo">
+      <h1>EliteMart</h1>
+    </div>
+    <div class="search-container">
+      <input type="text" id="searchBar" placeholder="Search products..." aria-label="Search products">
+      <i class="fas fa-search search-icon"></i>
+    </div>
+    <button id="cartBtn" aria-label="Shopping cart">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cartCount" class="cart-count">0</span>
+    </button>
+  </header>
+
+  <!-- Categories -->
+  <nav id="categories" aria-label="Product categories">
+    <button data-category="all" class="active" aria-pressed="true">All</button>
+    <button data-category="electronics" aria-pressed="false">Electronics</button>
+    <button data-category="clothes" aria-pressed="false">Clothes</button>
+    <button data-category="shoes" aria-pressed="false">Shoes</button>
+  </nav>
+
+  <!-- Sort Options -->
+  <div class="sort-options">
+    <label for="sort">Sort by:</label>
+    <select id="sort" aria-label="Sort products">
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name-asc">Name: A to Z</option>
+      <option value="name-desc">Name: Z to A</option>
+    </select>
+  </div>
+
+  <!-- Products -->
+  <main id="productList" class="product-grid">
+    <!-- Products will be inserted here by JavaScript -->
+  </main>
+
+  <!-- Cart Sidebar -->
+  <aside id="cart" class="cart-sidebar">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button id="closeCart" aria-label="Close cart">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="cart-content">
+      <ul id="cartItems" class="cart-items">
+        <!-- Cart items will be inserted here by JavaScript -->
+      </ul>
+      <div class="cart-summary">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span id="cartTotal">$0.00</span>
+        </div>
+        <button id="checkoutBtn" class="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="overlay"></div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="checkout-modal">
+    <div class="checkout-content">
+      <span class="close-checkout">&times;</span>
+      <h2>Checkout</h2>
+      
+      <div class="checkout-options">
+        <div class="checkout-option" id="whatsappOrder">
+          <i class="fab fa-whatsapp"></i>
+          <h3>Order via WhatsApp</h3>
+          <p>Place your order directly through WhatsApp for quick assistance</p>
+        </div>
+        
+        <div class="checkout-option" id="websiteOrder">
+          <i class="fas fa-shopping-cart"></i>
+          <h3>Checkout on Website</h3>
+          <p>Complete your order with our secure payment system</p>
+        </div>
+      </div>
+
+      <!-- Customer Information Form (initially hidden) -->
+      <form id="customerInfoForm" class="hidden">
+        <h3>Customer Information</h3>
+        <div class="form-group">
+          <label for="fullName">Full Name*</label>
+          <input type="text" id="fullName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address*</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number*</label>
+          <input type="tel" id="phone" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Delivery Address*</label>
+          <textarea id="address" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="city">City*</label>
+          <input type="text" id="city" required>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="backToOptions">Back</button>
+          <button type="submit" class="btn-primary">Proceed to Payment</button>
+        </div>
+      </form>
+
+      <!-- Payment Options (initially hidden) -->
+      <div id="paymentOptions" class="hidden">
+        <h3>Select Payment Method</h3>
+        
+        <div class="payment-methods">
+          <div class="payment-method" id="qrPayment">
+            <h4>Scan & Pay</h4>
+            <div class="qr-code">
+              <!-- Replace with your actual QR code image -->
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=YOUR_PAYMENT_DETAILS" alt="Scan to Pay">
+            </div>
+            <p>Scan the QR code using your mobile banking app</p>
+          </div>
+          
+          <div class="or-divider">OR</div>
+          
+          <div class="payment-method" id="directPayment">
+            <h4>Direct Payment</h4>
+            <p>Pay directly through your preferred payment method</p>
+            <div class="payment-buttons">
+              <button class="payment-btn easypaisa">
+                <img src="https://www.easypaisa.com.pk/images/logo.png" alt="EasyPaisa">
+              </button>
+              <button class="payment-btn jazzcash">
+                <img src="https://www.jazzcash.com.pk/images/logo.png" alt="JazzCash">
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" id="backToForm">Back to Form</button>
+          <button type="button" class="btn-primary" id="confirmOrder">Confirm Order</button>
+        </div>
+      </div>
+      
+      <!-- Order Confirmation (initially hidden) -->
+      <div id="orderConfirmation" class="hidden">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Order Placed Successfully!</h3>
+        <p>Your order has been received and is being processed.</p>
+        <p>Order ID: <span id="orderId"></span></p>
+        <p>We'll contact you shortly with order confirmation.</p>
+        <button class="btn-primary" id="closeCheckout">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p> 2025 Ali's Store | Powered by GitHub Pages</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
